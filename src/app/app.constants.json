@@ -3,7 +3,7 @@
   "scope": "ProductAdmin ProductAssignmentAdmin InventoryAdmin BuyerAdmin CatalogAdmin CategoryAdmin AddressAdmin CostCenterAdmin PromotionAdmin CreditCardAdmin MessageConfigAssignmentAdmin PriceScheduleAdmin OrderReader OrderAdmin SpendingAccountAdmin BuyerUserAdmin UserGroupAdmin ApprovalRuleAdmin PermissionAdmin AdminUserAdmin AdminUserGroupAdmin MeAdmin MeXpAdmin UnsubmittedOrderReader",
   "clientid": "C442D226-33AF-4E89-ACBD-242C26E730AE",
   "buyerid": "PizzaLuce",
-  "catalogid": "SHARED",
+  "catalogid": "RW-Catalog",
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": false,
