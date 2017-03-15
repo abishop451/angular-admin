@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('AdminUsersCtrl', AdminUsersController)
 ;
 
-function AdminUsersController($q, $filter, $state, $uibModal, toastr, $ocMedia, ocConfirm, OrderCloud, ocAdminUsers, ocParameters, AdminUsersList, Parameters) {
+function AdminUsersController($state, toastr, OrderCloud, ocAdminUsers, ocParameters, AdminUsersList, Parameters) {
     var vm = this;
     vm.list = AdminUsersList;
     vm.parameters = Parameters;
@@ -18,12 +18,7 @@ function AdminUsersController($q, $filter, $state, $uibModal, toastr, $ocMedia, 
 
     //Reload the state with new search parameter & reset the page
     vm.search = function() {
-        $state.go('.', ocParameters.Create(vm.parameters, true), {notify:false}); //don't trigger $stateChangeStart/Success, this is just so the URL will update with the search
-        vm.searchLoading = OrderCloud.AdminUsers.List(vm.parameters.search, 1, vm.parameters.pageSize)
-            .then(function(data) {
-                vm.list = data;
-                vm.searchResults = vm.parameters.search.length > 0;
-            })
+        vm.filter(true);
     };
 
     //Clear the search parameter, reload the state & reset the page
@@ -68,7 +63,7 @@ function AdminUsersController($q, $filter, $state, $uibModal, toastr, $ocMedia, 
                 vm.list.Items.push(newAdminUser);
                 vm.list.Meta.TotalCount++;
                 vm.list.Meta.ItemRange[1]++;
-                toastr.success(newAdminUser.Username + ' was created.', 'Success!');
+                toastr.success(newAdminUser.Username + ' was created.');
             })
     };
 
@@ -76,7 +71,7 @@ function AdminUsersController($q, $filter, $state, $uibModal, toastr, $ocMedia, 
         ocAdminUsers.Edit(scope.user)
             .then(function(updatedAdminUser) {
                 vm.list.Items[scope.$index] = updatedAdminUser;
-                toastr.success(updatedAdminUser.Username + ' was updated.', 'Success!');
+                toastr.success(updatedAdminUser.Username + ' was updated.');
             })
     };
 
@@ -86,7 +81,7 @@ function AdminUsersController($q, $filter, $state, $uibModal, toastr, $ocMedia, 
                 vm.list.Items.splice(scope.$index, 1);
                 vm.list.Meta.TotalCount--;
                 vm.list.Meta.ItemRange[1]--;
-                toastr.success(scope.user.Username + ' was deleted.', 'Success!');
+                toastr.success(scope.user.Username + ' was deleted.');
             })
     }
 }

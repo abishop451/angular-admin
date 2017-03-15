@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('AdminUserGroupsCtrl', AdminUserGroupsController)
 ;
 
-function AdminUserGroupsController($q, $filter, $state, $uibModal, toastr, ocConfirm, OrderCloud, ocAdminUserGroups, ocParameters, AdminUserGroupList, Parameters){
+function AdminUserGroupsController($state, toastr, OrderCloud, ocAdminUserGroups, ocParameters, AdminUserGroupList, Parameters){
     var vm = this;
     vm.list = AdminUserGroupList;
     vm.parameters = Parameters;
@@ -18,12 +18,7 @@ function AdminUserGroupsController($q, $filter, $state, $uibModal, toastr, ocCon
 
     //Reload the state with new search parameter & reset the page
     vm.search = function() {
-        $state.go('.', ocParameters.Create(vm.parameters, true), {notify:false}); //don't trigger $stateChangeStart/Success, this is just so the URL will update with the search
-        vm.searchLoading = OrderCloud.AdminUserGroups.List(vm.parameters.search, 1, vm.parameters.pageSize, vm.parameters.searchOn, vm.parameters.sortBy, vm.parameters.filters, vm.parameters.buyerid)
-            .then(function(data) {
-                vm.list = data;
-                vm.searchResults = vm.parameters.search.length > 0;
-            })
+        vm.filter(true);
     };
 
     //clear the search parameter, reload the state & reset the page
@@ -65,7 +60,7 @@ function AdminUserGroupsController($q, $filter, $state, $uibModal, toastr, ocCon
     vm.createGroup = function() {
         ocAdminUserGroups.Create()
             .then(function(newUserGroup) {
-                toastr.success(newUserGroup.Name + ' was created.', 'Success!');
+                toastr.success(newUserGroup.Name + ' was created.');
                 $state.go('adminUserGroup', {adminusergroupid:newUserGroup.ID});
             });
     };
@@ -76,7 +71,7 @@ function AdminUserGroupsController($q, $filter, $state, $uibModal, toastr, ocCon
                 vm.list.Items.splice(scope.$index, 1);
                 vm.list.Meta.TotalCount--;
                 vm.list.Meta.ItemRange[1]--;
-                toastr.success(scope.adminUserGroup.Name + ' was deleted.', 'Success!')
+                toastr.success(scope.adminUserGroup.Name + ' was deleted.');
             })
     }
 }

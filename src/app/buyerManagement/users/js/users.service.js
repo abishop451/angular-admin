@@ -45,7 +45,10 @@ function OrderCloudUsers($q, $uibModal, ocConfirm, OrderCloud) {
     }
 
     function _delete(user, buyerid) {
-        return ocConfirm.Confirm({message:'Are you sure you want to delete ' + user.Username + '? <br/> <b>This action cannot be undone.</b>', confirmText: 'Yes, delete this user', cancelText: 'Cancel'})
+        return ocConfirm.Confirm({
+                message:'Are you sure you want to delete <br> <b>' + user.Username + '</b>?',
+                confirmText: 'Delete user',
+                type: 'delete'})
             .then(function() {
                 return OrderCloud.Users.Delete(user.ID, buyerid)
             })
@@ -58,7 +61,7 @@ function OrderCloudUsers($q, $uibModal, ocConfirm, OrderCloud) {
                     queue = [],
                     totalPages = angular.copy(data1.Meta.TotalPages),
                     currentPage = angular.copy(data1.Meta.Page);
-                while(currentPage <= totalPages) {
+                while(currentPage < totalPages) {
                     currentPage++;
                     queue.push(OrderCloud.UserGroups.ListUserAssignments(usergroupid, null, currentPage, 100, buyerid));
                 }

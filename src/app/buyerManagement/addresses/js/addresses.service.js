@@ -46,7 +46,10 @@ function OrderCloudAddresses($q, $uibModal, ocConfirm, OrderCloud) {
     }
 
     function _delete(address, buyerid) {
-        return ocConfirm.Confirm({message:'Are you sure you want to delete this address? <br> <b>This action cannot be undone.</b>', confirmText: 'Delete this address', cancelText:'Cancel'})
+        return ocConfirm.Confirm({
+            message:'Are you sure you want to delete <br> <b>' + (address.AddressName ? address.AddressName : address.ID) + '</b>?',
+            confirmText: 'Delete address',
+            type: 'delete'})
             .then(function() {
                 return OrderCloud.Addresses.Delete(address.ID, buyerid)
             })
@@ -59,7 +62,7 @@ function OrderCloudAddresses($q, $uibModal, ocConfirm, OrderCloud) {
                     queue = [],
                     totalPages = angular.copy(data1.Meta.TotalPages),
                     currentPage = angular.copy(data1.Meta.Page);
-                while(currentPage <= totalPages) {
+                while(currentPage < totalPages) {
                     currentPage++;
                     queue.push(OrderCloud.Addresses.ListAssignments(null, null, usergroupid, level, null, null, currentPage, 100, buyerid));
                 }

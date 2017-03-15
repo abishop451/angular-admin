@@ -18,12 +18,7 @@ function UserGroupsController($state, $stateParams, toastr, ocUserGroups, OrderC
 
     //Reload the state with new search parameter & reset the page
     vm.search = function() {
-        $state.go('.', ocParameters.Create(vm.parameters, true), {notify:false}); //don't trigger $stateChangeStart/Success, this is just so the URL will update with the search
-        vm.searchLoading = OrderCloud.UserGroups.List(vm.parameters.search, 1, vm.parameters.pageSize, vm.parameters.searchOn, vm.parameters.sortBy, vm.parameters.filters, vm.parameters.buyerid)
-            .then(function(data) {
-                vm.list = data;
-                vm.searchResults = vm.parameters.search.length > 0;
-            })
+        vm.filter(true);
     };
 
     //Clear the search parameter, reload the state & reset the page
@@ -65,7 +60,7 @@ function UserGroupsController($state, $stateParams, toastr, ocUserGroups, OrderC
     vm.createGroup = function() {
         ocUserGroups.Create($stateParams.buyerid)
             .then(function(newUserGroup) {
-                toastr.success(newUserGroup.Name + ' was created.', 'Success!');
+                toastr.success(newUserGroup.Name + ' was created.');
                 $state.go('userGroup', {usergroupid:newUserGroup.ID});
             })
     };
@@ -73,7 +68,7 @@ function UserGroupsController($state, $stateParams, toastr, ocUserGroups, OrderC
     vm.deleteGroup = function(scope) {
         ocUserGroups.Delete(scope.userGroup, $stateParams.buyerid)
             .then(function() {
-                toastr.success(scope.userGroup.Name + ' was deleted.', 'Success!');
+                toastr.success(scope.userGroup.Name + ' was deleted.');
                 vm.list.Items.splice(scope.$index, 1);
                 vm.list.Meta.TotalCount--;
                 vm.list.Meta.ItemRange[1]--;

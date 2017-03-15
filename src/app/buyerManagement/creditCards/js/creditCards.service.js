@@ -47,7 +47,10 @@ function OrderCloudCreditCards($q, $uibModal, ocConfirm, OrderCloud, ocAuthNet) 
 
     function _delete(creditCard, buyerid) {
         creditCard.Shared = true;
-        return ocConfirm.Confirm({message:'Are you sure you want to delete this credit card? <br> <b>This action cannot be undone.</b>', confirmText: 'Delete credit card', cancelText:'Cancel'})
+        return ocConfirm.Confirm({
+                message:'Are you sure you want to delete <br> <b>' + 'xxxx-xxxx-xxxx-' + creditCard.PartialAccountNumber + '</b>?',
+                confirmText: 'Delete credit card',
+                type: 'delete'})
             .then(function() {
                 return ocAuthNet.DeleteCreditCard(creditCard, buyerid);
             });
@@ -60,7 +63,7 @@ function OrderCloudCreditCards($q, $uibModal, ocConfirm, OrderCloud, ocAuthNet) 
                     queue = [],
                     totalPages = angular.copy(data1.Meta.TotalPages),
                     currentPage = angular.copy(data1.Meta.Page);
-                while(currentPage <= totalPages) {
+                while(currentPage < totalPages) {
                     currentPage++;
                     queue.push(OrderCloud.CreditCards.ListAssignments(null, null, usergroupid, level, currentPage, 100, buyerid));
                 }
